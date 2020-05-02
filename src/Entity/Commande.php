@@ -3,12 +3,18 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={
+ *          "groups"={"commande_read"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\CommandeRepository")
  */
 class Commande
@@ -17,31 +23,37 @@ class Commande
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"commande_read", "boisson_read", "user_read", "menu_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"commande_read", "boisson_read", "user_read", "menu_read"})
      */
     private $dateCommande;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"commande_read", "boisson_read", "user_read", "menu_read"})
      */
     private $numTable;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Menu", inversedBy="commandes")
+     * @Groups({"commande_read","boisson_read", "user_read"})
      */
     private $menu;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="commande")
+     * @Groups({"commande_read","boisson_read", "menu_read"})
      */
     private $user;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Boisson", mappedBy="commande")
+     * @Groups({"commande_read", "user_read", "menu_read"})
      */
     private $boissons;
 
@@ -56,12 +68,12 @@ class Commande
         return $this->id;
     }
 
-    public function getDateCommande(): ?\DateTimeInterface
+    public function getDateCommande(): ?DateTimeInterface
     {
         return $this->dateCommande;
     }
 
-    public function setDateCommande(\DateTimeInterface $dateCommande): self
+    public function setDateCommande(DateTimeInterface $dateCommande): self
     {
         $this->dateCommande = $dateCommande;
 

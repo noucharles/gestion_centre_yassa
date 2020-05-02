@@ -3,10 +3,16 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={
+ *          "groups"={"reservation_read"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\ReservationRepository")
  */
 class Reservation
@@ -15,31 +21,37 @@ class Reservation
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"reservation_read", "client_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"reservation_read", "client_read"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"reservation_read", "client_read"})
      */
     private $dateReservation;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"reservation_read", "client_read"})
      */
     private $reservationSalle;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"reservation_read", "client_read"})
      */
     private $reservationTable;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="reservations")
+     * @Groups({"reservation_read"})
      */
     private $client;
 
@@ -60,12 +72,12 @@ class Reservation
         return $this;
     }
 
-    public function getDateReservation(): ?\DateTimeInterface
+    public function getDateReservation(): ?DateTimeInterface
     {
         return $this->dateReservation;
     }
 
-    public function setDateReservation(\DateTimeInterface $dateReservation): self
+    public function setDateReservation(DateTimeInterface $dateReservation): self
     {
         $this->dateReservation = $dateReservation;
 

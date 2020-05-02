@@ -6,9 +6,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={
+ *          "groups"={"menu_read"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\MenuRepository")
  */
 class Menu
@@ -17,21 +22,25 @@ class Menu
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"menu_read", "commande_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"menu_read", "commande_read"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"menu_read", "commande_read"})
      */
     private $image;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Commande", mappedBy="menu")
+     * @Groups({"menu_read"})
      */
     private $commandes;
 

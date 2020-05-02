@@ -6,9 +6,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={
+ *          "groups"={"categorie_read"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\CategorieRepository")
  */
 class Categorie
@@ -17,21 +22,25 @@ class Categorie
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"categorie_read", "boisson_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"categorie_read", "boisson_read"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"categorie_read", "boisson_read"})
      */
     private $description;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Boisson", mappedBy="categorie")
+     * @Groups({"categorie_read"})
      */
     private $boisson;
 

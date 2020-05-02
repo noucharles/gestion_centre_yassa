@@ -2,12 +2,19 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *     normalizationContext={
+ *          "groups"={"user_read"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
 class User implements UserInterface
@@ -16,42 +23,50 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"user_read", "formation_read", "commande_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"user_read", "formation_read", "commande_read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"user_read", "formation_read", "commande_read"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups({"user_read", "formation_read", "commande_read"})
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user_read", "formation_read", "commande_read"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user_read", "formation_read", "commande_read"})
      */
     private $lastName;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Commande", mappedBy="user")
+     * @Groups({"user_read", "formation_read"})
      */
     private $commande;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Formation", mappedBy="user")
+     * @Groups({"user_read", "commande_read"})
      */
     private $formations;
 
