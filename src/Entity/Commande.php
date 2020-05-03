@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,9 +16,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *     normalizationContext={
  *          "groups"={"commande_read"}
+ *     },
+ *     attributes={
+ *       "order": {"dateCommande": "desc"}
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CommandeRepository")
+ * @ApiFilter(DateFilter::class, properties={"dateCommande"})
  */
 class Commande
 {
